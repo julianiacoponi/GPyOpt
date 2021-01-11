@@ -104,6 +104,13 @@ class ContextManager(object):
                 self.context_index += variable.index_in_model
                 self.context_index_obj += variable.index_in_objective
                 self.context_value += variable.objective_to_model(context[context_variable])
+                # print(
+                #     f'\n[DEBUG]  acquisition_optimizer.ContextManager'
+                #     f'\n{variable=}'
+                #     f'\n{self.context_index=}'
+                #     f'\n{self.context_index_obj=}'
+                #     f'\n{self.context_value=}'
+                # )
 
             ## --- Get bounds and index for non context
             self.noncontext_index = [idx for idx in self.all_index if idx not in self.context_index]

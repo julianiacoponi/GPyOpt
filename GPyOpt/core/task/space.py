@@ -67,16 +67,27 @@ class Design_space(object):
         self.store_noncontinuous = store_noncontinuous
         self.config_space = space
 
+        # from pprint import pformat
+        # print('\n[DEBUG]  Design_space.__init__  self.config_space (before expansion) =\n', pformat(self.config_space))
         ## --- Transform input config space into the objects used to run the optimization
         self._translate_space(self.config_space)
         self._expand_space()
         self._compute_variables_indices()
         self._create_variables_dic()
 
+        # print('[DEBUG]  Design_space.__init__  self.config_space (after expansion) =\n', pformat(self.config_space))
+        # print('[DEBUG]  Design_space.__init__  bounds of self.config_space =\n', pformat([var.get_bounds() for var in self.space_expanded]))
         ## -- Compute raw and model dimensionalities
         self.objective_dimensionality = len(self.space_expanded)
         self.model_input_dims = [v.dimensionality_in_model for v in self.space_expanded]
         self.model_dimensionality = sum(self.model_input_dims)
+
+        # print(
+        #     f'[DEBUG]  Design_space.__init__'
+        #     f'\n{self.objective_dimensionality=}'
+        #     f'\n{self.model_input_dims=}'
+        #     f'\n{self.model_dimensionality=}'
+        # )
 
         # Because of the misspelling API used to expect "constrain" as a key
         # This fixes the API but also supports the old form

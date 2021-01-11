@@ -69,6 +69,7 @@ class SingleObjective(Objective):
         cost_evals = []
         f_evals     = np.empty(shape=[0, 1])
 
+        # print(f'\n[DEBUG]  SingleObjective._eval_func  {self.func=}')
         for i in range(x.shape[0]):
             st_time    = time.time()
             rlt = self.func(np.atleast_2d(x[i]))

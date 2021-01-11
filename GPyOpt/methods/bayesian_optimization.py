@@ -73,10 +73,31 @@ class BayesianOptimization(BO):
                 model_optimize_restarts, sparseGP, num_inducing and normalize can still be used but will be deprecated in the next version.
     """
 
-    def __init__(self, f, domain = None, constraints = None, cost_withGradients = None, model_type = 'GP', X = None, Y = None,
-    	initial_design_numdata = 5, initial_design_type='random', acquisition_type ='EI', normalize_Y = True,
-        exact_feval = False, acquisition_optimizer_type = 'lbfgs', model_update_interval=1, evaluator_type = 'sequential',
-        batch_size = 1, num_cores = 1, verbosity=False, verbosity_model = False, maximize=False, de_duplication=False, **kwargs):
+    def __init__(
+        self,
+        f,
+        domain = None,
+        constraints = None,
+        cost_withGradients = None,
+        model_type = 'GP',
+        X = None,
+        Y = None,
+        initial_design_numdata = 5,
+        initial_design_type='random',
+        acquisition_type ='EI',
+        normalize_Y = True,
+        exact_feval = False,
+        acquisition_optimizer_type = 'lbfgs',
+        model_update_interval=1,
+        evaluator_type = 'sequential',
+        batch_size = 1,
+        num_cores = 1,
+        verbosity=False,
+        verbosity_model = False,
+        maximize=False,
+        de_duplication=False,
+        **kwargs
+    ):
         self.modular_optimization = False
         self.initial_iter = True
         self.verbosity = verbosity
@@ -192,13 +213,29 @@ class BayesianOptimization(BO):
         # Case 1:
         if self.X is None:
             self.X = initial_design(self.initial_design_type, self.space, self.initial_design_numdata)
+            from pprint import pformat
+            print(
+                f'\n[DEBUG]  bayesian_optimization.BayesianOptimization._init_design_chooser'
+                f'\nself.X generated from initial_design ='
+                f'\n{pformat(self.X)}'
+            )
             self.Y, _ = self.objective.evaluate(self.X)
         # Case 2
         elif self.X is not None and self.Y is None:
+            from pprint import pformat
+            print(
+                f'\n[DEBUG]  bayesian_optimization.BayesianOptimization._init_design_chooser'
+                f'\nself.X manually supplied ='
+                f'\n{pformat(self.X)}'
+            )
             self.Y, _ = self.objective.evaluate(self.X)
 
     def _sign(self,f):
-         if self.maximize:
-             f_copy = f
-             def f(x):return -f_copy(x)
-         return f
+        if self.maximize:
+            # print(f'\n[DEBUG]  bayesian_optimization.BayesianOptimization._sign  maximising {f}')
+            f_copy = f
+            def f(x):
+                return -f_copy(x)
+        # else:
+            # print(f'\n[DEBUG]  bayesian_optimization.BayesianOptimization._sign  NOT maximising {f}')
+        return f

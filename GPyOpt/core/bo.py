@@ -160,8 +160,12 @@ class BO(object):
             self.num_acquisitions += 1
 
             if verbosity:
+                print('\n')
+                print('*' * 100)
                 print("num acquisition: {}, time elapsed: {:.2f}s".format(
                     self.num_acquisitions, self.cum_time))
+                print('*' * 100)
+                print('\n')
 
         # --- Stop messages and execution time
         self._compute_results()
